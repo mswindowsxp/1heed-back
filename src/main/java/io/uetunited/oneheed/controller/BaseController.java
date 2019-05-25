@@ -26,7 +26,7 @@ public class BaseController {
 		return "login";
 	}
 
-	@RequestMapping("/login-facebook")
+	@RequestMapping("/oauth2/login/facebook")
 	public String loginFacebook(HttpServletRequest request) throws ClientProtocolException, IOException {
 		String code = request.getParameter("code");
 		
