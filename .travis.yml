@@ -11,7 +11,7 @@ addons:
 before_install:
 - openssl aes-256-cbc -K $encrypted_9ae803e79d3a_key -iv $encrypted_9ae803e79d3a_iv
   -in deploy_key.enc -out ./deploy_key -d
-script: mvn cobertura:cobertura
+script: mvn clean package -DskipTests
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 - eval "$(ssh-agent -s)"
