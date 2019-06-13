@@ -1,10 +1,15 @@
 package io.uetunited.oneheed.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -12,43 +17,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.csrf().disable();
-
-        http.authorizeRequests().antMatchers("/**").permitAll();
-
-//        // Các trang không yêu cầu login
-//        http.authorizeRequests().antMatchers("/", "/login", "/logout").permitAll();
-//
-//        // Trang /userInfo yêu cầu phải login với vai trò ROLE_USER hoặc ROLE_ADMIN.
-//        // Nếu chưa login, nó sẽ redirect tới trang /login.
-//        http.authorizeRequests().antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
-//
-//        // Trang chỉ dành cho ADMIN
-//        http.authorizeRequests().antMatchers("/admin").access("hasRole('ROLE_ADMIN')");
-//
-//        // Khi người dùng đã login, với vai trò XX.
-//        // Nhưng truy cập vào trang yêu cầu vai trò YY,
-//        // Ngoại lệ AccessDeniedException sẽ ném ra.
-//        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
-//
-//        // Cấu hình cho Login Form.
-//        http.authorizeRequests().and().formLogin()//
-//                // Submit URL của trang login
-//                .loginProcessingUrl("/j_spring_security_check") // Submit URL
-//                .loginPage("/login")//
-//                .defaultSuccessUrl("/userAccountInfo")//
-//                .failureUrl("/login?error=true")//
-//                .usernameParameter("username")//
-//                .passwordParameter("password")
-//                // Cấu hình cho Logout Page.
-//                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
-
-        // Cấu hình Remember Me.
-//        http.authorizeRequests().and() //
-//                .rememberMe().tokenRepository(this.persistentTokenRepository()) //
-//                .tokenValiditySeconds(1 * 24 * 60 * 60); // 24h
-
+        http.authorizeRequests()
+                .anyRequest().permitAll();
+        http.cors();
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("HEAD",
+                "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        // setAllowCredentials(true) is important, otherwise:
+        // The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.
+        configuration.setAllowCredentials(true);
+        // setAllowedHeaders is important! Without it, OPTIONS preflight request
+        // will fail with 403 Invalid CORS request
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 }
