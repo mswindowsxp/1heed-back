@@ -7,7 +7,7 @@ branches:
   - master
   - develop
 addons:
-  ssh_known_hosts: 173.212.251.237
+  ssh_known_hosts: 176.223.141.228
 before_install:
 - openssl aes-256-cbc -K $encrypted_9ae803e79d3a_key -iv $encrypted_9ae803e79d3a_iv
   -in deploy_key.enc -out ./deploy_key -d
@@ -16,9 +16,10 @@ after_success:
 - bash <(curl -s https://codecov.io/bash)
 - eval "$(ssh-agent -s)"
 - chmod 600 ./deploy_key
-- echo -e "Host 173.212.251.237\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+- echo -e "Host 176.223.141.228\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 - ssh-add ./deploy_key
-- ssh -i ./deploy_key root@173.212.251.237 pwd
-- scp -i ./deploy_key -v target/vcare-0.0.1-SNAPSHOT.jar root@173.212.251.237:/opt/vcare/vcare-backend
+- ssh -i ./deploy_key root@176.223.141.228 pwd
+- scp -i ./deploy_key -v target/1heed-0.0.1-SNAPSHOT.jar root@176.223.141.228:/opt/oneheed/backend
+- ssh -o StrictHostKeyChecking=no -i ./deploy_key root@176.223.141.228 "cd /opt/oneheed/backend; screen -XS oneheed kill; screen -dmS oneheed java -jar 1heed-0.0.1-SNAPSHOT.jar"
 git:
   depth: 1
