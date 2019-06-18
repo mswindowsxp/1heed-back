@@ -1,6 +1,7 @@
 package io.uetunited.oneheed.security;
 
 import io.jsonwebtoken.*;
+import io.uetunited.oneheed.model.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,11 +29,15 @@ public class JwtTokenProvider {
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
         return Jwts.builder()
-                .setSubject(Long.toString(userPrincipal.getId()))
+                .setSubject(userPrincipal.getId())
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
+    }
+
+    public String generateToken(UserInfo  userInfo) {
+        return null;
     }
 
     public Long getUserIdFromJWT(String token) {

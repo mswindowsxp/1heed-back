@@ -8,6 +8,7 @@ import io.uetunited.oneheed.model.UserInfo;
 import io.uetunited.oneheed.model.UserType;
 import io.uetunited.oneheed.payload.AccessTokenPayload;
 import io.uetunited.oneheed.payload.LoginResponse;
+import io.uetunited.oneheed.service.AuthService;
 import io.uetunited.oneheed.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,17 +23,24 @@ public class SocialLoginController {
     @Autowired
     FbClient fbClient;
 
-    @Value("${jwt.header}")
+    @Value("${app.jwtHeader}")
     String tokenHeader;
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    AuthService authService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/login/facebook")
     public ResponseEntity<LoginResponse> facebookLogin(@RequestBody AccessTokenPayload payload) throws InvalidResponseException, ConnectException {
 
         UserInfo userInfo = fbClient.getUserInfo(payload.getAccessToken());
         userInfo.setUserType(UserType.FACEBOOK);
+
+        userService.createUser(userInfo);
+        String jwtToken = authService.generateJwtToken(userInfo);
+
         LoginResponse response = new LoginResponse();
         response.setToken(payload.getAccessToken());
         response.setUser(userInfo);
