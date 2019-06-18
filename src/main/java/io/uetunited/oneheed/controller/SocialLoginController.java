@@ -8,6 +8,7 @@ import io.uetunited.oneheed.model.UserInfo;
 import io.uetunited.oneheed.model.UserType;
 import io.uetunited.oneheed.payload.AccessTokenPayload;
 import io.uetunited.oneheed.payload.LoginResponse;
+import io.uetunited.oneheed.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpRequest;
@@ -23,6 +24,9 @@ public class SocialLoginController {
 
     @Value("${jwt.header}")
     String tokenHeader;
+
+    @Autowired
+    UserService userService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/login/facebook")
     public ResponseEntity<LoginResponse> facebookLogin(@RequestBody AccessTokenPayload payload) throws InvalidResponseException, ConnectException {
