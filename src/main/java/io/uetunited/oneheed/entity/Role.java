@@ -1,5 +1,6 @@
 package io.uetunited.oneheed.entity;
 
+import io.uetunited.oneheed.constant.RoleName;
 import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 

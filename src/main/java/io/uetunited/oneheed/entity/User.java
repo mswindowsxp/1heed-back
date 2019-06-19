@@ -1,7 +1,7 @@
 package io.uetunited.oneheed.entity;
 
 import io.uetunited.oneheed.entity.audit.DateAudit;
-import io.uetunited.oneheed.model.UserType;
+import io.uetunited.oneheed.constant.UserType;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;

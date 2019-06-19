@@ -1,6 +1,7 @@
 package io.uetunited.oneheed.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.uetunited.oneheed.constant.UserType;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserInfo {

@@ -1,7 +1,7 @@
 package io.uetunited.oneheed.repository;
 
 import io.uetunited.oneheed.entity.Role;
-import io.uetunited.oneheed.entity.RoleName;
+import io.uetunited.oneheed.constant.RoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

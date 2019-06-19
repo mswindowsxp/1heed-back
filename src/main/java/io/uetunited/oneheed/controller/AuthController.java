@@ -2,7 +2,7 @@ package io.uetunited.oneheed.controller;
 
 import io.uetunited.oneheed.exception.AppException;
 import io.uetunited.oneheed.entity.Role;
-import io.uetunited.oneheed.entity.RoleName;
+import io.uetunited.oneheed.constant.RoleName;
 import io.uetunited.oneheed.entity.User;
 import io.uetunited.oneheed.payload.ApiResponse;
 import io.uetunited.oneheed.payload.JwtAuthenticationResponse;

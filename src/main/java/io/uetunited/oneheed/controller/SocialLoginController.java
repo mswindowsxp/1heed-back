@@ -5,7 +5,7 @@ import io.uetunited.oneheed.exception.ConnectException;
 import io.uetunited.oneheed.exception.InvalidResponseException;
 import io.uetunited.oneheed.model.PageAccount;
 import io.uetunited.oneheed.model.UserInfo;
-import io.uetunited.oneheed.model.UserType;
+import io.uetunited.oneheed.constant.UserType;
 import io.uetunited.oneheed.payload.AccessTokenPayload;
 import io.uetunited.oneheed.payload.LoginResponse;
 import io.uetunited.oneheed.service.AuthService;

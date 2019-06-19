@@ -1,4 +1,4 @@
-package io.uetunited.oneheed.entity;
+package io.uetunited.oneheed.constant;
 
 public enum  RoleName {
     ROLE_USER,
