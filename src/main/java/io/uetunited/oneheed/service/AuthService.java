@@ -12,8 +12,7 @@ public class AuthService {
     JwtTokenProvider jwtTokenProvider;
 
     public String generateJwtToken(UserInfo userInfo) {
-
+        return null;
     }
 
-    public
 }
