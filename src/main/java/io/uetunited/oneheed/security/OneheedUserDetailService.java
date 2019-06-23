@@ -1,7 +1,7 @@
 package io.uetunited.oneheed.security;
 
 import io.uetunited.oneheed.exception.ResourceNotFoundException;
-import io.uetunited.oneheed.entity.User;
+import io.uetunited.oneheed.payload.UserDTO;
 import io.uetunited.oneheed.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,30 +12,28 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class OneheedUserDetailService implements UserDetailsService {
 
     @Autowired
     UserRepository userRepository;
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String usernameOrEmail)
-            throws UsernameNotFoundException {
-        // Let people login with either username or email
-        User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found with username or email : " + usernameOrEmail)
-        );
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserDTO user = userRepository.getByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("UserDTO not found with username: " + username);
+        }
 
         return UserPrincipal.create(user);
     }
 
     @Transactional
-    public UserDetails loadUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("User", "id", id)
-        );
-
+    public UserDetails loadUserById(String id) {
+        UserDTO user = userRepository.getById(id);
+        if (user == null) {
+            throw new ResourceNotFoundException("UserDTO", "id", id);
+        }
         return UserPrincipal.create(user);
     }
 }

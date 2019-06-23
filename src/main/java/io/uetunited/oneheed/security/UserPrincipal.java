@@ -1,7 +1,9 @@
 package io.uetunited.oneheed.security;
 
-import io.uetunited.oneheed.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.uetunited.oneheed.constant.UserType;
+import io.uetunited.oneheed.payload.UserDTO;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,26 +18,35 @@ public class UserPrincipal implements UserDetails {
 
     private String name;
 
-    private String username;
+    private String socialId;
+
+    private UserType userType;
 
     @JsonIgnore
     private String email;
+
+    private String username;
+
+    private String avatar;
 
     @JsonIgnore
     private String password;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(String id, String name, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(String id, String name, String socialId, UserType userType, String email, String username, String avatar, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.name = name;
-        this.username = username;
+        this.socialId = socialId;
+        this.userType = userType;
         this.email = email;
+        this.username = username;
+        this.avatar = avatar;
         this.password = password;
         this.authorities = authorities;
     }
 
-    public static UserPrincipal create(User user) {
+    public static UserPrincipal create(UserDTO user) {
         List<GrantedAuthority> authorities = user.getRoles().stream().map(role ->
                 new SimpleGrantedAuthority(role.getName().name())
         ).collect(Collectors.toList());
@@ -43,9 +54,12 @@ public class UserPrincipal implements UserDetails {
         return new UserPrincipal(
                 user.getId(),
                 user.getName(),
-                user.getUsername(),
+                user.getSocialId(),
+                user.getType(),
                 user.getEmail(),
-                user.getPassword(),
+                user.getSocialId(),
+                user.getAvatar(),
+                Strings.EMPTY,
                 authorities
         );
     }
@@ -58,8 +72,20 @@ public class UserPrincipal implements UserDetails {
         return name;
     }
 
+    public String getSocialId() {
+        return socialId;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public String getAvatar() {
+        return avatar;
     }
 
     @Override

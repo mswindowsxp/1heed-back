@@ -13,7 +13,7 @@ public class UserService {
     UserRepository userRepository;
 
     public boolean checkIfUserIsExist(String username, UserType userType) {
-
+        return true;
     }
 
     public void createUser(UserInfo userInfo) {

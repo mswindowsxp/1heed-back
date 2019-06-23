@@ -1,6 +1,6 @@
 package io.uetunited.oneheed.config;
 
-import io.uetunited.oneheed.security.CustomUserDetailsService;
+import io.uetunited.oneheed.security.OneheedUserDetailService;
 import io.uetunited.oneheed.security.JwtAuthenticationEntryPoint;
 import io.uetunited.oneheed.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    CustomUserDetailsService customUserDetailsService;
+    OneheedUserDetailService oneheedUserDetailService;
 
     @Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
-                .userDetailsService(customUserDetailsService)
+                .userDetailsService(oneheedUserDetailService)
                 .passwordEncoder(passwordEncoder());
     }
 
