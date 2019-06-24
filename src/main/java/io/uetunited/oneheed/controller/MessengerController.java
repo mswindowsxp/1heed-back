@@ -17,7 +17,7 @@ import javax.validation.Valid;
  *
  */
 @RestController
-@RequestMapping("/webhook")
+@RequestMapping("/webhook/facebook")
 @Slf4j
 public class MessengerController {
     private static final String EVENT_RECEIVED = "EVENT_RECEIVED";
