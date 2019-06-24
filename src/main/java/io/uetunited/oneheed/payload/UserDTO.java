@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,10 +28,12 @@ public class UserDTO {
     @Column(name = "is_active")
     private Boolean isActive;
     @Column(name = "created_at")
-    private Date createdAt;
+    private Timestamp createdAt;
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private Timestamp updatedAt;
     @Column(name = "access_token")
     private String accessToken;
+    @Column(name = "user_name")
+    private String username;
     private List<RoleDTO> roles = new ArrayList<>();
 }

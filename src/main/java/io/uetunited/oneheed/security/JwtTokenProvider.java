@@ -2,6 +2,7 @@ package io.uetunited.oneheed.security;
 
 import io.jsonwebtoken.*;
 import io.uetunited.oneheed.model.UserInfo;
+import io.uetunited.oneheed.payload.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,8 +37,16 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String generateToken(UserInfo  userInfo) {
-        return null;
+    public String generateToken(UserDTO userDTO) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
+
+        return Jwts.builder()
+                .setSubject(userDTO.getId())
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
     }
 
     public String getUserIdFromJWT(String token) {

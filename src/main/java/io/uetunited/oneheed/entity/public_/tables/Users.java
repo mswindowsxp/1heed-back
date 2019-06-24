@@ -41,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Users extends TableImpl<UsersRecord> {
 
-    private static final long serialVersionUID = -2102300317;
+    private static final long serialVersionUID = -2038307339;
 
     /**
      * The reference instance of <code>public.users</code>
@@ -64,12 +64,12 @@ public class Users extends TableImpl<UsersRecord> {
     /**
      * The column <code>public.users.created_at</code>.
      */
-    public final TableField<UsersRecord, Timestamp> CREATED_AT = createField("created_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+    public final TableField<UsersRecord, Timestamp> CREATED_AT = createField("created_at", org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.field("now()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 
     /**
      * The column <code>public.users.updated_at</code>.
      */
-    public final TableField<UsersRecord, Timestamp> UPDATED_AT = createField("updated_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+    public final TableField<UsersRecord, Timestamp> UPDATED_AT = createField("updated_at", org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.field("now()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 
     /**
      * The column <code>public.users.email</code>.
@@ -99,7 +99,7 @@ public class Users extends TableImpl<UsersRecord> {
     /**
      * The column <code>public.users.is_active</code>.
      */
-    public final TableField<UsersRecord, Boolean> IS_ACTIVE = createField("is_active", org.jooq.impl.SQLDataType.BOOLEAN, this, "");
+    public final TableField<UsersRecord, Boolean> IS_ACTIVE = createField("is_active", org.jooq.impl.SQLDataType.BOOLEAN.defaultValue(org.jooq.impl.DSL.field("true", org.jooq.impl.SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>public.users.access_token</code>.
@@ -107,9 +107,9 @@ public class Users extends TableImpl<UsersRecord> {
     public final TableField<UsersRecord, String> ACCESS_TOKEN = createField("access_token", org.jooq.impl.SQLDataType.CLOB, this, "");
 
     /**
-     * The column <code>public.users.user_name</code>.
+     * The column <code>public.users.username</code>.
      */
-    public final TableField<UsersRecord, String> USER_NAME = createField("user_name", org.jooq.impl.SQLDataType.VARCHAR(100), this, "");
+    public final TableField<UsersRecord, String> USERNAME = createField("username", org.jooq.impl.SQLDataType.VARCHAR(100), this, "");
 
     /**
      * Create a <code>public.users</code> table reference

@@ -30,7 +30,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Record11<String, Timestamp, Timestamp, String, String, String, String, String, Boolean, String, String> {
 
-    private static final long serialVersionUID = 1652933919;
+    private static final long serialVersionUID = 133093170;
 
     /**
      * Setter for <code>public.users.id</code>.
@@ -173,16 +173,16 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     }
 
     /**
-     * Setter for <code>public.users.user_name</code>.
+     * Setter for <code>public.users.username</code>.
      */
-    public void setUserName(String value) {
+    public void setUsername(String value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>public.users.user_name</code>.
+     * Getter for <code>public.users.username</code>.
      */
-    public String getUserName() {
+    public String getUsername() {
         return (String) get(10);
     }
 
@@ -303,7 +303,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
      */
     @Override
     public Field<String> field11() {
-        return Users.USERS.USER_NAME;
+        return Users.USERS.USERNAME;
     }
 
     /**
@@ -391,7 +391,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
      */
     @Override
     public String component11() {
-        return getUserName();
+        return getUsername();
     }
 
     /**
@@ -479,7 +479,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
      */
     @Override
     public String value11() {
-        return getUserName();
+        return getUsername();
     }
 
     /**
@@ -577,7 +577,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
      */
     @Override
     public UsersRecord value11(String value) {
-        setUserName(value);
+        setUsername(value);
         return this;
     }
 
@@ -614,7 +614,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     /**
      * Create a detached, initialised UsersRecord
      */
-    public UsersRecord(String id, Timestamp createdAt, Timestamp updatedAt, String email, String name, String type, String avatar, String socialId, Boolean isActive, String accessToken, String userName) {
+    public UsersRecord(String id, Timestamp createdAt, Timestamp updatedAt, String email, String name, String type, String avatar, String socialId, Boolean isActive, String accessToken, String username) {
         super(Users.USERS);
 
         set(0, id);
@@ -627,6 +627,6 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
         set(7, socialId);
         set(8, isActive);
         set(9, accessToken);
-        set(10, userName);
+        set(10, username);
     }
 }

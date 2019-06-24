@@ -1,6 +1,6 @@
 package io.uetunited.oneheed.service;
 
-import io.uetunited.oneheed.model.UserInfo;
+import io.uetunited.oneheed.payload.UserDTO;
 import io.uetunited.oneheed.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,8 +11,8 @@ public class AuthService {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
-    public String generateJwtToken(UserInfo userInfo) {
-        return null;
+    public String generateJwtToken(UserDTO user) {
+        return jwtTokenProvider.generateToken(user);
     }
 
 }
