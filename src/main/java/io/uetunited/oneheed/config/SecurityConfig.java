@@ -88,9 +88,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .permitAll()
                     .antMatchers(HttpMethod.GET, "/api/polls/**", "/api/users/**")
                         .permitAll()
-                    .antMatchers("/api/webhook/**")
+                    .antMatchers("/webhook/**")
                         .permitAll()
-                    .antMatchers("/api/login/**")
+                    .antMatchers("/login/**")
                         .permitAll()
                     .anyRequest()
                         .authenticated();
