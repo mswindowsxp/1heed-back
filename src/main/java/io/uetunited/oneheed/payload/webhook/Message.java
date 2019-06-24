@@ -22,4 +22,5 @@ public class Message {
     @JsonProperty("app_id")
     private String appId;
     private String metadata;
+    private Long seq;
 }
