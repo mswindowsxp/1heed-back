@@ -3,7 +3,7 @@
  */
 package io.uetunited.oneheed.controller;
 
-import io.uetunited.oneheed.payload.WebhookEvent;
+import io.uetunited.oneheed.payload.webhook.WebhookEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
