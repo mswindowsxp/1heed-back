@@ -32,9 +32,9 @@ public class MessengerController {
     }
 
     @GetMapping
-    public ResponseEntity verifyWebhook(@RequestParam(value = "mode") String mode,
-                                        @RequestParam(value = "verify_token") String verifyToken,
-                                        @RequestParam(value = "challenge") String challenge) {
+    public ResponseEntity verifyWebhook(@RequestParam(value = "hub.mode") String mode,
+                                        @RequestParam(value = "hub.verify_token") String verifyToken,
+                                        @RequestParam(value = "hub.challenge") String challenge) {
         if (StringUtils.isNotBlank(mode) && StringUtils.isNotBlank(verifyToken)) {
             if (SUBSCRIBE.equalsIgnoreCase(mode) && verify_token.equalsIgnoreCase(verifyToken)) {
                 log.debug("WEBHOOK_VERIFIED");
