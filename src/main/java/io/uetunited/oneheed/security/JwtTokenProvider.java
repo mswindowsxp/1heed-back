@@ -44,6 +44,11 @@ public class JwtTokenProvider {
                 .setSubject(userDTO.getId())
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
+                .claim("username", userDTO.getUsername())
+                .claim("email", userDTO.getEmail())
+                .claim("socialId", userDTO.getSocialId())
+                .claim("type", userDTO.getType().name())
+                .claim("name", userDTO.getName())
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }

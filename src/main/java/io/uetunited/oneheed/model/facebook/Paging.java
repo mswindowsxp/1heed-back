@@ -1,4 +1,4 @@
-package io.uetunited.oneheed.model;
+package io.uetunited.oneheed.model.facebook;
 
 import lombok.Getter;
 import lombok.Setter;

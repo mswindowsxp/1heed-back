@@ -32,7 +32,7 @@ public class UserDTO {
     private Timestamp updatedAt;
     @Column(name = "access_token")
     private String accessToken;
-    @Column(name = "user_name")
+    @Column(name = "username")
     private String username;
     private List<RoleDTO> roles = new ArrayList<>();
 }
