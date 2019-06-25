@@ -1,4 +1,4 @@
-package io.uetunited.oneheed.payload;
+package io.uetunited.oneheed.payload.dto;
 
 import lombok.Getter;
 import lombok.Setter;

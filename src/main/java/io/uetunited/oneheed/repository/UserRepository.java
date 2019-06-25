@@ -3,13 +3,12 @@ package io.uetunited.oneheed.repository;
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import io.uetunited.oneheed.constant.UserType;
 import io.uetunited.oneheed.entity.public_.tables.records.UsersRecord;
-import io.uetunited.oneheed.payload.UserDTO;
+import io.uetunited.oneheed.payload.dto.UserDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import static io.uetunited.oneheed.entity.public_.tables.Users.USERS;

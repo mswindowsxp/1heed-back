@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package io.uetunited.oneheed.payload.webhook;
 
@@ -18,17 +18,17 @@ import java.util.List;
 @Setter
 @ToString
 public class WebhookEvent {
-	private List<WebhookEventEntry> entry;
-    private String object;    
-    
-	public WebhookEvent() {		
-	}	
-	
-	public WebhookEvent(List<WebhookEventEntry> entry, String object) {
-		super();
-		this.entry = entry;
-		this.object = object;
-	}
+    private List<WebhookEventEntry> entry;
+    private String object;
+
+    public WebhookEvent() {
+    }
+
+    public WebhookEvent(List<WebhookEventEntry> entry, String object) {
+        super();
+        this.entry = entry;
+        this.object = object;
+    }
 
 
 }

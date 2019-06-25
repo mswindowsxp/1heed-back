@@ -8,7 +8,7 @@ import io.uetunited.oneheed.model.UserInfo;
 import io.uetunited.oneheed.constant.UserType;
 import io.uetunited.oneheed.payload.AccessTokenPayload;
 import io.uetunited.oneheed.payload.LoginResponse;
-import io.uetunited.oneheed.payload.UserDTO;
+import io.uetunited.oneheed.payload.dto.UserDTO;
 import io.uetunited.oneheed.service.AuthService;
 import io.uetunited.oneheed.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

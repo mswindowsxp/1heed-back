@@ -1,7 +1,7 @@
 package io.uetunited.oneheed.security;
 
 import io.uetunited.oneheed.exception.ResourceNotFoundException;
-import io.uetunited.oneheed.payload.UserDTO;
+import io.uetunited.oneheed.payload.dto.UserDTO;
 import io.uetunited.oneheed.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

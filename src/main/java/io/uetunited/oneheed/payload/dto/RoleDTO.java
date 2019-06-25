@@ -1,4 +1,4 @@
-package io.uetunited.oneheed.payload;
+package io.uetunited.oneheed.payload.dto;
 
 import io.uetunited.oneheed.constant.RoleName;
 import lombok.Getter;

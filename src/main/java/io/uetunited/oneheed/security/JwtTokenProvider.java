@@ -1,8 +1,7 @@
 package io.uetunited.oneheed.security;
 
 import io.jsonwebtoken.*;
-import io.uetunited.oneheed.model.UserInfo;
-import io.uetunited.oneheed.payload.UserDTO;
+import io.uetunited.oneheed.payload.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

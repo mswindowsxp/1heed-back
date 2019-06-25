@@ -1,4 +1,4 @@
-package io.uetunited.oneheed.payload;
+package io.uetunited.oneheed.payload.dto;
 
 import io.uetunited.oneheed.constant.UserType;
 import lombok.Getter;
@@ -7,7 +7,6 @@ import lombok.Setter;
 import javax.persistence.Column;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Getter

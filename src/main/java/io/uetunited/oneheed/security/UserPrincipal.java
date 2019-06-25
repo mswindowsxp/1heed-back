@@ -2,7 +2,7 @@ package io.uetunited.oneheed.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.uetunited.oneheed.constant.UserType;
-import io.uetunited.oneheed.payload.UserDTO;
+import io.uetunited.oneheed.payload.dto.UserDTO;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

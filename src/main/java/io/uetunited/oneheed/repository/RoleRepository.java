@@ -1,7 +1,7 @@
 package io.uetunited.oneheed.repository;
 
 import io.uetunited.oneheed.constant.RoleName;
-import io.uetunited.oneheed.payload.RoleDTO;
+import io.uetunited.oneheed.payload.dto.RoleDTO;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
