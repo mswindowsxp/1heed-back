@@ -1,6 +1,7 @@
 package io.uetunited.oneheed.security;
 
 import io.jsonwebtoken.*;
+import io.uetunited.oneheed.constant.UserType;
 import io.uetunited.oneheed.payload.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,24 @@ public class JwtTokenProvider {
                 .getBody();
 
         return claims.getSubject();
+    }
+
+    public UserDTO getUserFromJWT(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody();
+
+        UserDTO user = new UserDTO();
+
+        user.setId(claims.getSubject());
+        user.setUsername(claims.get("username", String.class));
+        user.setEmail(claims.get("email", String.class));
+        user.setSocialId(claims.get("socialId", String.class));
+        user.setType(UserType.valueOf(claims.get("type", String.class)));
+        user.setName(claims.get("name", String.class));
+
+        return user;
     }
 
     public boolean validateToken(String authToken) {

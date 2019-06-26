@@ -1,6 +1,6 @@
 package io.uetunited.oneheed.payload;
 
-import io.uetunited.oneheed.model.UserInfo;
+import io.uetunited.oneheed.model.facebook.UserInfo;
 import lombok.Getter;
 import lombok.Setter;
 

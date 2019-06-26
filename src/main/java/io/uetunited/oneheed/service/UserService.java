@@ -1,9 +1,9 @@
 package io.uetunited.oneheed.service;
 
-import io.uetunited.oneheed.model.UserInfo;
+import io.uetunited.oneheed.model.facebook.UserInfo;
 import io.uetunited.oneheed.constant.UserType;
 import io.uetunited.oneheed.payload.dto.UserDTO;
-import io.uetunited.oneheed.repository.UserRepository;
+import io.uetunited.oneheed.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     @Autowired
-    UserRepository userRepository;
+    UserDao userRepository;
 
     public boolean checkIfUserIsExist(String socialId, UserType userType) {
         return userRepository.checkIfUserExists(socialId, userType);

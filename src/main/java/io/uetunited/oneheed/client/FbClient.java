@@ -8,7 +8,7 @@ import io.uetunited.oneheed.exception.ConnectException;
 import io.uetunited.oneheed.exception.InvalidResponseException;
 import io.uetunited.oneheed.model.facebook.FacebookDataResponse;
 import io.uetunited.oneheed.model.facebook.PageAccount;
-import io.uetunited.oneheed.model.UserInfo;
+import io.uetunited.oneheed.model.facebook.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

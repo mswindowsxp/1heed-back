@@ -6,8 +6,8 @@
 //import io.uetunited.oneheed.entity.User;
 //import io.uetunited.oneheed.payload.ApiResponse;
 //import io.uetunited.oneheed.payload.JwtAuthenticationResponse;
-//import io.uetunited.oneheed.repository.RoleRepository;
-//import io.uetunited.oneheed.repository.UserRepository;
+//import io.uetunited.oneheed.dao.RoleRepository;
+//import io.uetunited.oneheed.dao.UserRepository;
 //import io.uetunited.oneheed.security.JwtTokenProvider;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.http.HttpStatus;

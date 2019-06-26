@@ -4,7 +4,7 @@ import io.uetunited.oneheed.client.FbClient;
 import io.uetunited.oneheed.constant.UserType;
 import io.uetunited.oneheed.exception.ConnectException;
 import io.uetunited.oneheed.exception.InvalidResponseException;
-import io.uetunited.oneheed.model.UserInfo;
+import io.uetunited.oneheed.model.facebook.UserInfo;
 import io.uetunited.oneheed.payload.AccessTokenPayload;
 import io.uetunited.oneheed.payload.LoginResponse;
 import io.uetunited.oneheed.payload.dto.UserDTO;

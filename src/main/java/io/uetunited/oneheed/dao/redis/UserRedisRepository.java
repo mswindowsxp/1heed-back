@@ -1,4 +1,4 @@
-package io.uetunited.oneheed.repository.redis;
+package io.uetunited.oneheed.dao.redis;
 
 import org.springframework.stereotype.Repository;
 

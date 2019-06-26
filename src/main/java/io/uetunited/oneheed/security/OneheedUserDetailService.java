@@ -2,7 +2,7 @@ package io.uetunited.oneheed.security;
 
 import io.uetunited.oneheed.exception.ResourceNotFoundException;
 import io.uetunited.oneheed.payload.dto.UserDTO;
-import io.uetunited.oneheed.repository.UserRepository;
+import io.uetunited.oneheed.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OneheedUserDetailService implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    UserDao userRepository;
 
     @Override
     @Transactional
@@ -35,5 +35,9 @@ public class OneheedUserDetailService implements UserDetailsService {
             throw new ResourceNotFoundException("UserDTO", "id", id);
         }
         return UserPrincipal.create(user);
+    }
+
+    public UserDetails loadUser(UserDTO userDTO) {
+        return UserPrincipal.create(userDTO);
     }
 }

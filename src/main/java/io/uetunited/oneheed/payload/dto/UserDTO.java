@@ -19,7 +19,7 @@ public class UserDTO {
     @Column(name = "name")
     private String name;
     @Column(name = "type")
-    private UserType type;
+    private String type;
     @Column(name = "avatar")
     private String avatar;
     @Column(name = "social_id")
@@ -34,5 +34,4 @@ public class UserDTO {
     private String accessToken;
     @Column(name = "username")
     private String username;
-    private List<RoleDTO> roles = new ArrayList<>();
 }

@@ -3,7 +3,7 @@
 //import io.uetunited.oneheed.exception.ResourceNotFoundException;
 //import io.uetunited.oneheed.entity.User;
 //import io.uetunited.oneheed.payload.*;
-//import io.uetunited.oneheed.repository.UserRepository;
+//import io.uetunited.oneheed.dao.UserRepository;
 //import io.uetunited.oneheed.security.UserPrincipal;
 //import io.uetunited.oneheed.security.CurrentUser;
 //import org.slf4j.Logger;

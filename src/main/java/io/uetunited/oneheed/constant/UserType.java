@@ -1,5 +1,5 @@
 package io.uetunited.oneheed.constant;
 
-public enum UserType {
-    FACEBOOK
+public interface UserType {
+    String FACEBOOK = "FACEBOOK";
 }
