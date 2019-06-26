@@ -2,12 +2,12 @@ package io.uetunited.oneheed.dao;
 
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import io.uetunited.oneheed.dao.mapper.UserMapper;
-import io.uetunited.oneheed.payload.dto.UserDTO;
+import io.uetunited.oneheed.payload.dto.User;
 import org.apache.commons.lang3.StringUtils;
-import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,48 +16,35 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserDao {
 
+    @Autowired
+    Jdbi jdbi = null;
+
     @SqlQuery("select * from users where id=:id limit 1")
     @RegisterRowMapper(UserMapper.class)
-    UserDTO getById(@Bind("id") String id);
+    User getById(@Bind("id") String id);
 
     @SqlQuery("select * from users where social_id=:socialId AND \"type\"=:type limit 1")
     @RegisterRowMapper(UserMapper.class)
-    UserDTO getBySocialId(@Bind("socialId") String socialId, @Bind("type") String type);
+    User getBySocialId(@Bind("socialId") String socialId, @Bind("type") String type);
 
     @SqlQuery("select * from users where username=:username limit 1")
     @RegisterRowMapper(UserMapper.class)
-    UserDTO getByUsername(@Bind("username") String username);
+    User getByUsername(@Bind("username") String username);
 
-    public UserDTO createOrUpdateUserAccessToken(UserDTO userDTO) {
-        String sql = "INSERT INTO users\n" +
-                "(id, created_at, updated_at, email, \"name\", \"type\", avatar, social_id, is_active, access_token, username)\n" +
-                "VALUES('', now(), now(), '', '', '', '', '', true, '', '');\n";
+    @SqlQuery("insert into users\n" +
+            "(id, created_at, updated_at, email, \"name\", \"type\", avatar, social_id, is_active, access_token, username)\n" +
+            "VALUES(:id, now(), now(), :email, :name, :type, :avatar, :socialId, true, :accessToken, :username) on conflict (username) do update set access_token = EXCLUDED.access_token;")
+    @RegisterRowMapper(UserMapper.class)
+    @GetGeneratedKeys
+    User createUser(@Bind("id") String id, @Bind("email") String email, @Bind("name") String name, @Bind("type") String type,
+                    @Bind("avatar") String avatar, @Bind("socialId") String socialId, @Bind("accessToken") String accessToken, @Bind("username") String username);
 
-        if (StringUtils.isBlank(userDTO.getId())) {
-            userDTO.setId(NanoIdUtils.randomNanoId());
+    default User createOrUpdateUserAccessToken(User user) {
+        if (StringUtils.isBlank(user.getId())) {
+            user.setId(NanoIdUtils.randomNanoId());
         }
-        UsersRecord record = context.newRecord(USERS);
-        record.setId(userDTO.getId());
-        record.setCreatedAt(userDTO.getCreatedAt());
-        record.setUpdatedAt(null);
-        record.setEmail(userDTO.getEmail());
-        record.setName(userDTO.getName());
-        record.setType(userDTO.getType().name());
-        record.setAvatar(userDTO.getAvatar());
-        record.setSocialId(userDTO.getSocialId());
-        record.setIsActive(userDTO.getIsActive());
-        record.setAccessToken(userDTO.getAccessToken());
-        record.setUsername(userDTO.getUsername());
-        context.update(USERS).set(record);
-        return userDTO;
+        return createUser(user.getId(), user.getEmail(), user.getName(), user.getType(), user.getAvatar(),
+                user.getSocialId(), user.getAccessToken(), user.getUsername());
     }
 
-    boolean checkIfUserExists(String socialId, String type) {
-        String sql = "SELECT count(id) FROM users WHERE social_id=:socialId AND \"type\"=:type";
-
-        try (Connection con = sql2o.open()) {
-            return con.createQuery(sql).addParameter("socialId", socialId).addParameter("type", type).executeScalar(Integer.class) > 0;
-        }
-
-    }
 }

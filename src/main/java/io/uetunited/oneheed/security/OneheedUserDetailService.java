@@ -1,7 +1,7 @@
 package io.uetunited.oneheed.security;
 
 import io.uetunited.oneheed.exception.ResourceNotFoundException;
-import io.uetunited.oneheed.payload.dto.UserDTO;
+import io.uetunited.oneheed.payload.dto.User;
 import io.uetunited.oneheed.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,9 +20,9 @@ public class OneheedUserDetailService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDTO user = userRepository.getByUsername(username);
+        User user = userRepository.getByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException("UserDTO not found with username: " + username);
+            throw new UsernameNotFoundException("User not found with username: " + username);
         }
 
         return UserPrincipal.create(user);
@@ -30,14 +30,14 @@ public class OneheedUserDetailService implements UserDetailsService {
 
     @Transactional
     public UserDetails loadUserById(String id) {
-        UserDTO user = userRepository.getById(id);
+        User user = userRepository.getById(id);
         if (user == null) {
-            throw new ResourceNotFoundException("UserDTO", "id", id);
+            throw new ResourceNotFoundException("User", "id", id);
         }
         return UserPrincipal.create(user);
     }
 
-    public UserDetails loadUser(UserDTO userDTO) {
-        return UserPrincipal.create(userDTO);
+    public UserDetails loadUser(User user) {
+        return UserPrincipal.create(user);
     }
 }

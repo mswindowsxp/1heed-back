@@ -1,8 +1,7 @@
 package io.uetunited.oneheed.security;
 
 import io.jsonwebtoken.*;
-import io.uetunited.oneheed.constant.UserType;
-import io.uetunited.oneheed.payload.dto.UserDTO;
+import io.uetunited.oneheed.payload.dto.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,19 +36,19 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String generateToken(UserDTO userDTO) {
+    public String generateToken(User user) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
         return Jwts.builder()
-                .setSubject(userDTO.getId())
+                .setSubject(user.getId())
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
-                .claim("username", userDTO.getUsername())
-                .claim("email", userDTO.getEmail())
-                .claim("socialId", userDTO.getSocialId())
-                .claim("type", userDTO.getType().name())
-                .claim("name", userDTO.getName())
+                .claim("username", user.getUsername())
+                .claim("email", user.getEmail())
+                .claim("socialId", user.getSocialId())
+                .claim("type", user.getType())
+                .claim("name", user.getName())
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
@@ -63,19 +62,19 @@ public class JwtTokenProvider {
         return claims.getSubject();
     }
 
-    public UserDTO getUserFromJWT(String token) {
+    public User getUserFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
 
-        UserDTO user = new UserDTO();
+        User user = new User();
 
         user.setId(claims.getSubject());
         user.setUsername(claims.get("username", String.class));
         user.setEmail(claims.get("email", String.class));
         user.setSocialId(claims.get("socialId", String.class));
-        user.setType(UserType.valueOf(claims.get("type", String.class)));
+        user.setType(claims.get("type", String.class));
         user.setName(claims.get("name", String.class));
 
         return user;

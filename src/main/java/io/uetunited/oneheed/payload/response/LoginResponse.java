@@ -1,6 +1,6 @@
-package io.uetunited.oneheed.payload;
+package io.uetunited.oneheed.payload.response;
 
-import io.uetunited.oneheed.model.facebook.UserInfo;
+import io.uetunited.oneheed.payload.dto.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,5 +9,5 @@ import lombok.Setter;
 public class LoginResponse {
     private String token;
     private String refreshToken;
-    private UserInfo user;
+    private User user;
 }

@@ -1,12 +1,11 @@
 package io.uetunited.oneheed.config;
 
-import io.uetunited.oneheed.security.OneheedUserDetailService;
 import io.uetunited.oneheed.security.JwtAuthenticationEntryPoint;
 import io.uetunited.oneheed.security.JwtAuthenticationFilter;
+import io.uetunited.oneheed.security.OneheedUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -47,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder());
     }
 
-    @Bean(BeanIds.AUTHENTICATION_MANAGER)
+    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();

@@ -5,9 +5,9 @@ import io.uetunited.oneheed.constant.UserType;
 import io.uetunited.oneheed.exception.ConnectException;
 import io.uetunited.oneheed.exception.InvalidResponseException;
 import io.uetunited.oneheed.model.facebook.UserInfo;
-import io.uetunited.oneheed.payload.AccessTokenPayload;
-import io.uetunited.oneheed.payload.LoginResponse;
-import io.uetunited.oneheed.payload.dto.UserDTO;
+import io.uetunited.oneheed.payload.dto.User;
+import io.uetunited.oneheed.payload.request.SocialLoginRequest;
+import io.uetunited.oneheed.payload.response.LoginResponse;
 import io.uetunited.oneheed.service.AuthService;
 import io.uetunited.oneheed.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,21 +33,17 @@ public class SocialLoginController {
     AuthService authService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/login/facebook")
-    public ResponseEntity<LoginResponse> facebookLogin(@RequestBody AccessTokenPayload payload) throws InvalidResponseException, ConnectException {
+    public ResponseEntity<LoginResponse> facebookLogin(@RequestBody SocialLoginRequest payload) throws InvalidResponseException, ConnectException {
 
         UserInfo userInfo = fbClient.getUserInfo(payload.getAccessToken());
         userInfo.setAccessToken(payload.getAccessToken());
         userInfo.setUserType(UserType.FACEBOOK);
 
-        UserDTO user = userService.createOrUpdateUser(userInfo);
-        String jwtToken = authService.generateJwtToken(user);
-        String refreshToken = authService.generateNewRefreshToken();
+        User user = userService.createOrUpdateUser(userInfo);
 
-        LoginResponse response = new LoginResponse();
-        response.setToken(jwtToken);
-        response.setRefreshToken(refreshToken);
-        user.setAccessToken(null); // hide access token from client
-        response.setUser(userInfo);
+        LoginResponse response = authService.generateLoginResponse(user);
+        userInfo.setAccessToken(null); // hide access token from client
+        response.setUser(user);
         return ResponseEntity.ok(response);
     }
 

@@ -14,8 +14,4 @@ public class WebhookEventEntry {
 	private Long time;
 	private List<Messaging> messaging;
 
-	@Override
-	public String toString() {
-		return "WebhookEventEntry [messaging=" + messaging + "]";
-	}
 }

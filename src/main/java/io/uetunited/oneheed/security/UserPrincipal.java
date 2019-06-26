@@ -2,7 +2,7 @@ package io.uetunited.oneheed.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.uetunited.oneheed.constant.UserType;
-import io.uetunited.oneheed.payload.dto.UserDTO;
+import io.uetunited.oneheed.payload.dto.User;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,7 +20,7 @@ public class UserPrincipal implements UserDetails {
 
     private String socialId;
 
-    private UserType userType;
+    private String userType;
 
     @JsonIgnore
     private String email;
@@ -34,7 +34,7 @@ public class UserPrincipal implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(String id, String name, String socialId, UserType userType, String email, String username, String avatar, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(String id, String name, String socialId, String userType, String email, String username, String avatar, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.name = name;
         this.socialId = socialId;
@@ -46,7 +46,7 @@ public class UserPrincipal implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static UserPrincipal create(UserDTO user) {
+    public static UserPrincipal create(User user) {
         List<GrantedAuthority> authorities =
                 Arrays.asList(new SimpleGrantedAuthority("USER"));
 
@@ -75,7 +75,7 @@ public class UserPrincipal implements UserDetails {
         return socialId;
     }
 
-    public UserType getUserType() {
+    public String getUserType() {
         return userType;
     }
 

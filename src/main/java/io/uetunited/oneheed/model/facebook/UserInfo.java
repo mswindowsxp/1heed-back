@@ -17,5 +17,5 @@ public class UserInfo {
     private String email;
     @JsonProperty("access_token")
     private String accessToken;
-    private UserType userType;
+    private String userType;
 }
