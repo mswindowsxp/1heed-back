@@ -72,14 +72,17 @@
         <dependency>
             <groupId>org.jdbi</groupId>
             <artifactId>jdbi3-core</artifactId>
+            <version>3.8.2</version>
         </dependency>
         <dependency>
             <groupId>org.jdbi</groupId>
             <artifactId>jdbi3-postgres</artifactId>
+            <version>3.8.2</version>
         </dependency>
         <dependency>
             <groupId>org.jdbi</groupId>
             <artifactId>jdbi3-sqlobject</artifactId>
+            <version>3.8.2</version>
         </dependency>
 
         <!-- For Working with Json Web Tokens (JWT) -->
@@ -129,18 +132,6 @@
             <version>2.2</version>
         </dependency>
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.jdbi</groupId>
-                <artifactId>jdbi3-bom</artifactId>
-                <type>pom</type>
-                <version>3.8.2</version>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <plugins>
