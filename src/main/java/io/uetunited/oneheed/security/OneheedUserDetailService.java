@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Service
 public class OneheedUserDetailService implements UserDetailsService {
@@ -20,21 +22,21 @@ public class OneheedUserDetailService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.getByUsername(username);
-        if (user == null) {
+        Optional<User> user = userRepository.getByUsername(username);
+        if (!user.isPresent()) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
 
-        return UserPrincipal.create(user);
+        return UserPrincipal.create(user.get());
     }
 
     @Transactional
     public UserDetails loadUserById(String id) {
-        User user = userRepository.getById(id);
-        if (user == null) {
+        Optional<User> user = userRepository.getById(id);
+        if (!user.isPresent()) {
             throw new ResourceNotFoundException("User", "id", id);
         }
-        return UserPrincipal.create(user);
+        return UserPrincipal.create(user.get());
     }
 
     public UserDetails loadUser(User user) {

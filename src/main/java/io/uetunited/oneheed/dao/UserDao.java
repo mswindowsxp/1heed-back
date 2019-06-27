@@ -50,7 +50,7 @@ public class UserDao {
                 "VALUES(:id, now(), now(), :email, :name, :type, :avatar, :socialId, true, :accessToken, :username) on conflict (username) do update set access_token = EXCLUDED.access_token";
         try (Handle handle = jdbi.open()) {
             return handle.createUpdate(sql)
-                    .bind("id", id).bind("email", email).bind("name", name).bind("avatar", avatar)
+                    .bind("id", id).bind("email", email).bind("name", name).bind("avatar", avatar).bind("type", type)
                     .bind("socialId", socialId).bind("accessToken", accessToken).bind("username", username)
                     .executeAndReturnGeneratedKeys().mapToBean(User.class).findFirst();
         }

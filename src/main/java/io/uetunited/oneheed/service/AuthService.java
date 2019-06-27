@@ -1,6 +1,7 @@
 package io.uetunited.oneheed.service;
 
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.uetunited.oneheed.dao.redis.RefreshTokenDao;
 import io.uetunited.oneheed.dao.redis.TokenDao;
 import io.uetunited.oneheed.model.facebook.UserInfo;
@@ -8,10 +9,16 @@ import io.uetunited.oneheed.payload.dto.User;
 import io.uetunited.oneheed.payload.response.LoginResponse;
 import io.uetunited.oneheed.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 public class AuthService {
+
+    @Value("${app.jwtRefreshTokenExpiresInMs}")
+    Long refreshTokenLifetime;
 
     @Autowired
     JwtTokenProvider jwtTokenProvider;
@@ -22,12 +29,12 @@ public class AuthService {
     @Autowired
     RefreshTokenDao refreshTokenDao;
 
-    public LoginResponse generateLoginResponse(User user) {
+    public LoginResponse generateLoginResponse(User user) throws JsonProcessingException {
         String jwtToken = jwtTokenProvider.generateToken(user);
         String refreshToken = NanoIdUtils.randomNanoId();
 
         tokenDao.addToken(jwtToken);
-        refreshTokenDao.addRefreshToken(refreshToken, user);
+        refreshTokenDao.addRefreshToken(refreshToken, user, refreshTokenLifetime);
 
         LoginResponse response = new LoginResponse();
         response.setToken(jwtToken);
@@ -44,7 +51,7 @@ public class AuthService {
         return false;
     }
 
-    public LoginResponse refreshToken(String refreshToken) {
+    public LoginResponse refreshToken(String refreshToken) throws IOException {
         if (refreshTokenDao.checkIfRefreshTokenExists(refreshToken)) {
             User user = refreshTokenDao.getUserFromRefreshToken(refreshToken);
             refreshTokenDao.deleteRefreshToken(refreshToken);

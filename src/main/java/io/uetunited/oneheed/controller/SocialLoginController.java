@@ -1,5 +1,6 @@
 package io.uetunited.oneheed.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.uetunited.oneheed.client.FbClient;
 import io.uetunited.oneheed.constant.UserType;
 import io.uetunited.oneheed.exception.ConnectException;
@@ -33,7 +34,7 @@ public class SocialLoginController {
     AuthService authService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/login/facebook")
-    public ResponseEntity<LoginResponse> facebookLogin(@RequestBody SocialLoginRequest payload) throws InvalidResponseException, ConnectException {
+    public ResponseEntity<LoginResponse> facebookLogin(@RequestBody SocialLoginRequest payload) throws InvalidResponseException, ConnectException, JsonProcessingException {
 
         UserInfo userInfo = fbClient.getUserInfo(payload.getAccessToken());
         userInfo.setAccessToken(payload.getAccessToken());

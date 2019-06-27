@@ -1,14 +1,10 @@
 package io.uetunited.oneheed.config;
 
-import io.uetunited.oneheed.payload.dto.User;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.serializer.GenericToStringSerializer;
+import redis.clients.jedis.Jedis;
 
 @Configuration
 public class RedisConfig {
@@ -19,52 +15,21 @@ public class RedisConfig {
     String redisHost;
 
     @Value("${app.redis.port}")
-    String redisPort;
+    Integer redisPort;
 
     @Value("${app.redis.db}")
-    String redisDb;
+    Integer redisDb;
 
     @Value("${app.redis.auth}")
     String redisAuth;
 
     @Bean
-    JedisConnectionFactory jedisConnectionFactory() {
-        JedisConnectionFactory jedisConFactory
-                = new JedisConnectionFactory();
-        jedisConFactory.setHostName(redisHost);
-        jedisConFactory.setPort(Integer.parseInt(redisPort));
-        jedisConFactory.setDatabase(Integer.parseInt(redisDb));
-        jedisConFactory.setPassword(redisAuth);
-        return jedisConFactory;
+    Jedis jedis() {
+        Jedis jedis = new Jedis(redisHost, redisPort);
+        if (StringUtils.isNotBlank(redisAuth)) {
+            jedis.auth(redisAuth);
+        }
+        jedis.select(redisDb);
+        return jedis;
     }
-
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(jedisConnectionFactory());
-        template.setValueSerializer(new GenericToStringSerializer<Object>(Object.class));
-        return template;
-    }
-
-    @Bean
-    RedisTemplate<String, User> refreshTokenRedisTemplate() {
-        RedisTemplate<String, User> template = new RedisTemplate<>();
-        template.setConnectionFactory(jedisConnectionFactory());
-        template.setEnableTransactionSupport(true);
-        return template;
-    }
-
-    @Bean
-    public StringRedisTemplate stringRedisTemplate() {
-        StringRedisTemplate stringRedisTemplate = new StringRedisTemplate(jedisConnectionFactory());
-        stringRedisTemplate.setEnableTransactionSupport(true);
-        return stringRedisTemplate;
-    }
-
-    @Bean(name = "FBMessageTopic")
-    public ChannelTopic channelTopic() {
-        return new ChannelTopic(FBMessageTopic);
-    }
-
-
 }

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -45,7 +47,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh/token")
-    public ResponseEntity refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+    public ResponseEntity refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) throws IOException {
         LoginResponse refreshResult = authService.refreshToken(refreshTokenRequest.getRefreshToken());
         if (refreshResult == null) {
             return ResponseEntity.badRequest().build();

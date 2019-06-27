@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * RestTemplateConfig
  */
 @Configuration
-public class MapperConfig {
+public class ObjectMapperConfig {
 
     @Bean
     public ObjectMapper createObjectMapper() {

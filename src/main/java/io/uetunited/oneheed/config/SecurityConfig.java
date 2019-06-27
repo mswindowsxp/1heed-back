@@ -71,14 +71,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                 .authorizeRequests()
-                    .antMatchers("/auth/**")
-                        .permitAll()
-                    .antMatchers("/user/checkUsernameAvailability", "/user/checkEmailAvailability")
-                        .permitAll()
-                    .antMatchers("/webhook/**")
-                        .permitAll()
-                    .antMatchers("/login/**")
-                        .permitAll()
+                    .antMatchers("/auth/**").permitAll()
+                    .antMatchers("/user/checkUsernameAvailability", "/user/checkEmailAvailability").permitAll()
+                    .antMatchers("/webhook/**").permitAll()
+                    .antMatchers("/login/**").permitAll()
                     .anyRequest()
                         .authenticated();
 
