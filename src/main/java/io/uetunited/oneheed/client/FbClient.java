@@ -10,9 +10,7 @@ import io.uetunited.oneheed.model.facebook.FacebookDataResponse;
 import io.uetunited.oneheed.model.facebook.PageAccount;
 import io.uetunited.oneheed.model.facebook.UserInfo;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -30,14 +28,23 @@ public class FbClient {
     @Autowired
     ObjectMapper mapper;
 
+    @Value("${facebook.app.id}")
+    String appId;
+
+    @Value("${facebook.app.secret}")
+    String appSecret;
+
     @Value("${facebook.graph.url}")
     String graphApiUrl;
 
     @Value("${facebook.graph.pages}")
     String graphApiPageUrl;
 
-    @Value("${facebook.link.get.token}")
+    @Value("${facebook.graph.exchange.token}")
     String getLongLiveTokenUrl;
+
+    @Value("${facebook.graph.subscribe.page}")
+    String subscribePageUrl;
 
     public UserInfo getUserInfo(String accessToken) throws ConnectException, InvalidResponseException {
         OkHttpClient client = builder.build();
@@ -104,7 +111,7 @@ public class FbClient {
     public String getLongLiveToken(String accessToken) throws ConnectException, InvalidResponseException {
         OkHttpClient client = builder.build();
 
-        String url = String.format(getLongLiveTokenUrl, accessToken);
+        String url = String.format(getLongLiveTokenUrl, appId, appSecret, accessToken);
 
         Request req = new Request.Builder().url(url).get().build();
 
@@ -121,6 +128,26 @@ public class FbClient {
             String token = res.body().string();
             res.close();
             return token;
+        } catch (IOException e) {
+            log.info("Could not connect to FB Graph API", e);
+            throw new ConnectException("Failed to connect to FB Graph API", e);
+        }
+    }
+
+    public void subscribeToPage(String pageAccessToken) throws ConnectException, InvalidResponseException {
+        OkHttpClient client = builder.build();
+
+        String url = String.format(subscribePageUrl, pageAccessToken);
+
+        Request req = new Request.Builder().url(url).post(RequestBody.create(MediaType.get("application/json"), "")).build();
+
+        try {
+            Response res = client.newCall(req).execute();
+            if (res.code() != 200){
+                log.info("Request not success {}", res);
+                throw new InvalidResponseException("Request not success");
+            }
+            log.info(res.body().string());
         } catch (IOException e) {
             log.info("Could not connect to FB Graph API", e);
             throw new ConnectException("Failed to connect to FB Graph API", e);
