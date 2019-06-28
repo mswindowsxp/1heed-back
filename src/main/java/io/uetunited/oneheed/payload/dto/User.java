@@ -18,7 +18,7 @@ public class User {
     private String avatar;
     private String socialId;
     @JsonIgnore
-    private Boolean isActive;
+    private Boolean isActive = true;
     @JsonIgnore
     private Timestamp createdAt;
     @JsonIgnore

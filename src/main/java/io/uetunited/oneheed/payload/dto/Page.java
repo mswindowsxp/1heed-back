@@ -1,5 +1,6 @@
 package io.uetunited.oneheed.payload.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +11,9 @@ public class Page {
     private String socialId;
     private String name;
     private String avatar;
+    @JsonIgnore
     private String accessToken;
     private String type;
-    private Boolean isActive;
+    @JsonIgnore
+    private Boolean isActive = true;
 }

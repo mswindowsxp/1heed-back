@@ -38,7 +38,7 @@ public class PageController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/facebook/pages")
     public ResponseEntity registerPage(@RequestBody RegisterPageRequest registerPageRequest) throws InvalidResponseException, ConnectException {
-        pageService.registerPage(registerPageRequest.getId(), registerPageRequest.getAccessToken());
+        pageService.registerPage(registerPageRequest.getId(), registerPageRequest.getName(), registerPageRequest.getAccessToken());
         return ResponseEntity.ok().build();
     }
 }
