@@ -36,6 +36,9 @@ public class FbClient {
     @Value("${facebook.graph.pages}")
     String graphApiPageUrl;
 
+    @Value("${facebook.link.get.token}")
+    String getLongLiveTokenUrl;
+
     public UserInfo getUserInfo(String accessToken) throws ConnectException, InvalidResponseException {
         OkHttpClient client = builder.build();
 
@@ -92,6 +95,32 @@ public class FbClient {
         } catch (JsonParseException | JsonMappingException e) {
             log.info("Could not deserialize response", e);
             throw new InvalidResponseException("Could not deserialize response", e);
+        } catch (IOException e) {
+            log.info("Could not connect to FB Graph API", e);
+            throw new ConnectException("Failed to connect to FB Graph API", e);
+        }
+    }
+
+    public String getLongLiveToken(String accessToken) throws ConnectException, InvalidResponseException {
+        OkHttpClient client = builder.build();
+
+        String url = String.format(getLongLiveTokenUrl, accessToken);
+
+        Request req = new Request.Builder().url(url).get().build();
+
+        try {
+            Response res = client.newCall(req).execute();
+            if (res.code() != 200){
+                log.info("Request not success {}", res);
+                throw new InvalidResponseException("Request not success");
+            }
+            if (res.body() == null) {
+                log.info("Response doesn't have body {}", res);
+                throw new InvalidResponseException("Could not read body of response");
+            }
+            String token = res.body().string();
+            res.close();
+            return token;
         } catch (IOException e) {
             log.info("Could not connect to FB Graph API", e);
             throw new ConnectException("Failed to connect to FB Graph API", e);
