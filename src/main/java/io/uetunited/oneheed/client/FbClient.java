@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.uetunited.oneheed.exception.ConnectException;
 import io.uetunited.oneheed.exception.InvalidResponseException;
+import io.uetunited.oneheed.model.facebook.AccessToken;
 import io.uetunited.oneheed.model.facebook.FacebookDataResponse;
 import io.uetunited.oneheed.model.facebook.PageAccount;
 import io.uetunited.oneheed.model.facebook.UserInfo;
@@ -125,9 +126,10 @@ public class FbClient {
                 log.info("Response doesn't have body {}", res);
                 throw new InvalidResponseException("Could not read body of response");
             }
-            String token = res.body().string();
+            InputStream body = res.body().byteStream();
+            AccessToken longLiveToken = mapper.readValue(body, AccessToken.class);
             res.close();
-            return token;
+            return longLiveToken.getAccessToken();
         } catch (IOException e) {
             log.info("Could not connect to FB Graph API", e);
             throw new ConnectException("Failed to connect to FB Graph API", e);
@@ -147,7 +149,7 @@ public class FbClient {
                 log.info("Request not success {}", res);
                 throw new InvalidResponseException("Request not success");
             }
-            log.info(res.body().string());
+//            log.info(res.body().string());
         } catch (IOException e) {
             log.info("Could not connect to FB Graph API", e);
             throw new ConnectException("Failed to connect to FB Graph API", e);

@@ -28,14 +28,6 @@ public class PageController {
     @Autowired
     PageService pageService;
 
-//    @RequestMapping(method = RequestMethod.GET, value = "/facebook/pages")
-//    public ResponseEntity getPagesAdminByUser(HttpRequest request) throws InvalidResponseException, ConnectException {
-//        String token = request.getHeaders().getFirst(tokenHeader);
-//        List<PageAccount> pages = fbClient.getPages(token);
-//
-//        return ResponseEntity.ok(pages);
-//    }
-
     @RequestMapping(method = RequestMethod.POST, value = "/facebook/pages")
     public ResponseEntity registerPage(@RequestBody RegisterPageRequest registerPageRequest) throws InvalidResponseException, ConnectException {
         pageService.registerPage(registerPageRequest.getId(), registerPageRequest.getName(), registerPageRequest.getAccessToken());
