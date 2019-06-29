@@ -8,5 +8,6 @@ import lombok.Setter;
 public class RegisterPageRequest {
     private String id;
     private String name;
+    private String avatar;
     private String accessToken;
 }

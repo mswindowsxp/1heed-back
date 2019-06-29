@@ -15,4 +15,7 @@ public class Paging {
         private String before;
         private String after;
     }
+
+    private String previous;
+    private String next;
 }
