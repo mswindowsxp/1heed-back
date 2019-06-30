@@ -1,6 +1,6 @@
 package io.uetunited.oneheed.service;
 
-import io.uetunited.oneheed.model.facebook.UserInfo;
+import io.uetunited.oneheed.model.facebook.UserData;
 import io.uetunited.oneheed.payload.dto.User;
 import io.uetunited.oneheed.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,21 +14,21 @@ public class UserService {
     @Autowired
     UserDao userRepository;
 
-    public User createOrUpdateUser(UserInfo userInfo) {
-        Optional<User> userOptional = userRepository.getBySocialId(userInfo.getId(), userInfo.getUserType());
+    public User createOrUpdateUser(UserData userData) {
+        Optional<User> userOptional = userRepository.getBySocialId(userData.getId(), userData.getUserType());
         User user = null;
         if (userOptional.isPresent()) {
             user = userOptional.get();
-            user.setAccessToken(userInfo.getAccessToken());
+            user.setAccessToken(userData.getAccessToken());
         } else {
             user = new User();
-            user.setEmail(userInfo.getEmail());
-            user.setName(userInfo.getName());
-            user.setType(userInfo.getUserType());
-            user.setAvatar(userInfo.getPicture().getData().getUrl());
-            user.setSocialId(userInfo.getId());
-            user.setAccessToken(userInfo.getAccessToken());
-            user.setUsername(userInfo.getUserType() + "_" + userInfo.getId());
+            user.setEmail(userData.getEmail());
+            user.setName(userData.getName());
+            user.setType(userData.getUserType());
+            user.setAvatar(userData.getPicture().getData().getUrl());
+            user.setSocialId(userData.getId());
+            user.setAccessToken(userData.getAccessToken());
+            user.setUsername(userData.getUserType() + "_" + userData.getId());
         }
         return userRepository.createOrUpdateUserAccessToken(user).get();
     }

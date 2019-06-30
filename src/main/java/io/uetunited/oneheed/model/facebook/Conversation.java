@@ -13,4 +13,14 @@ public class Conversation {
     private String link;
     @JsonProperty("updated_time")
     private String updatedTime;
+    private FacebookDataObject<UserData> senders;
+
+    @JsonProperty("unread_count")
+    private Integer unreadCount;
+    @JsonProperty("message_count")
+    private Integer messageCount;
+    @JsonProperty("participants")
+    private FacebookDataObject<UserData> participants;
+    @JsonProperty("messages")
+    private FacebookDataObject<MessageDetail> messages;
 }

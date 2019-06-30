@@ -10,12 +10,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserInfo {
+public class UserData {
     private String name;
     private Picture picture;
     private String id;
     private String email;
-    @JsonProperty("access_token")
+    @JsonProperty(value = "access_token", access = JsonProperty.Access.WRITE_ONLY)
     private String accessToken;
     private String userType;
 }

@@ -1,5 +1,6 @@
 package io.uetunited.oneheed.payload.webhook;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,5 +18,7 @@ public class Attachment {
     @Setter
     public class Payload {
         private String url;
+        @JsonProperty("sticker_id")
+        private String stickerId;
     }
 }

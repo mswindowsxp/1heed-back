@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class FacebookDataResponse<T> {
+public class FacebookDataObject<T> {
     private List<T> data;
     private Paging paging;
 }

@@ -5,7 +5,7 @@ import io.uetunited.oneheed.client.FbClient;
 import io.uetunited.oneheed.constant.UserType;
 import io.uetunited.oneheed.exception.ConnectException;
 import io.uetunited.oneheed.exception.InvalidResponseException;
-import io.uetunited.oneheed.model.facebook.UserInfo;
+import io.uetunited.oneheed.model.facebook.UserData;
 import io.uetunited.oneheed.payload.dto.User;
 import io.uetunited.oneheed.payload.request.SocialLoginRequest;
 import io.uetunited.oneheed.payload.response.LoginResponse;
@@ -34,25 +34,18 @@ public class SocialLoginController {
     AuthService authService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/login/facebook")
-    public ResponseEntity<LoginResponse> facebookLogin(@RequestBody SocialLoginRequest payload) throws InvalidResponseException, ConnectException, JsonProcessingException {
+    public ResponseEntity<LoginResponse> facebookLogin(@RequestBody SocialLoginRequest payload) throws InvalidResponseException, ConnectException {
 
-        UserInfo userInfo = fbClient.getUserInfo(payload.getAccessToken());
-        userInfo.setAccessToken(payload.getAccessToken());
-        userInfo.setUserType(UserType.FACEBOOK);
+        UserData userData = fbClient.getUserInfo(payload.getAccessToken());
+        userData.setAccessToken(payload.getAccessToken());
+        userData.setUserType(UserType.FACEBOOK);
 
-        User user = userService.createOrUpdateUser(userInfo);
+        User user = userService.createOrUpdateUser(userData);
 
         LoginResponse response = authService.generateLoginResponse(user);
-        userInfo.setAccessToken(null); // hide access token from client
+//        userData.setAccessToken(null); // hide access token from client
         response.setUser(user);
         return ResponseEntity.ok(response);
     }
 
-//    @RequestMapping(method = RequestMethod.GET, value = "/facebook/pages")
-//    public ResponseEntity getPagesAdminByUser(HttpRequest request) throws InvalidResponseException, ConnectException {
-//        String token = request.getHeaders().getFirst(tokenHeader);
-//        List<PageAccount> pages = fbClient.getPages(token);
-//
-//        return ResponseEntity.ok(pages);
-//    }
 }

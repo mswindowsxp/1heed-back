@@ -6,7 +6,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.uetunited.oneheed.exception.ConnectException;
 import io.uetunited.oneheed.exception.InvalidResponseException;
-import io.uetunited.oneheed.model.facebook.*;
+import io.uetunited.oneheed.model.facebook.AccessToken;
+import io.uetunited.oneheed.model.facebook.Conversation;
+import io.uetunited.oneheed.model.facebook.FacebookDataObject;
+import io.uetunited.oneheed.model.facebook.UserData;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
+import java.util.Optional;
 
 @Component
 @Slf4j
@@ -44,61 +46,30 @@ public class FbClient {
     @Value("${facebook.graph.subscribe.page}")
     String subscribePageUrl;
 
-    public UserInfo getUserInfo(String accessToken) throws ConnectException, InvalidResponseException {
+    @Value("${facebook.graph.get.conversation}")
+    String getPageConversationUrl;
+
+    @Value("${facebook.graph.get.conversation.detail}")
+    String getPageConversationDetail;
+
+    public UserData getUserInfo(String accessToken) throws ConnectException, InvalidResponseException {
         OkHttpClient client = builder.build();
 
         String url = String.format(graphApiUrl, accessToken);
 
         Request req = new Request.Builder().url(url).get().build();
 
-        try {
-            Response res = client.newCall(req).execute();
-            if (res.code() != 200){
-                log.info("Request not success {}", res);
-                throw new InvalidResponseException("Request not success");
-            }
-            if (res.body() == null) {
-                log.info("Response doesn't have body {}", res);
-                throw new InvalidResponseException("Could not read body of response");
-            }
-            InputStream json = res.body().byteStream();
-            UserInfo user = mapper.readValue(json, UserInfo.class);
-            res.close();
-            return user;
-        } catch (JsonParseException | JsonMappingException e) {
-            log.info("Could not deserialize response", e);
-            throw new InvalidResponseException("Could not deserialize response", e);
-        } catch (IOException e) {
-            log.info("Could not connect to FB Graph API", e);
-            throw new ConnectException("Failed to connect to FB Graph API", e);
-        }
+        return executeAndReturnResult(client, req, UserData.class, null, true).get();
     }
 
-    public String getLongLiveToken(String accessToken) throws ConnectException, InvalidResponseException {
+    public AccessToken getLongLiveToken(String accessToken) throws ConnectException, InvalidResponseException {
         OkHttpClient client = builder.build();
 
         String url = String.format(getLongLiveTokenUrl, appId, appSecret, accessToken);
 
         Request req = new Request.Builder().url(url).get().build();
 
-        try {
-            Response res = client.newCall(req).execute();
-            if (res.code() != 200){
-                log.info("Request not success {}", res);
-                throw new InvalidResponseException("Request not success");
-            }
-            if (res.body() == null) {
-                log.info("Response doesn't have body {}", res);
-                throw new InvalidResponseException("Could not read body of response");
-            }
-            InputStream body = res.body().byteStream();
-            AccessToken longLiveToken = mapper.readValue(body, AccessToken.class);
-            res.close();
-            return longLiveToken.getAccessToken();
-        } catch (IOException e) {
-            log.info("Could not connect to FB Graph API", e);
-            throw new ConnectException("Failed to connect to FB Graph API", e);
-        }
+        return executeAndReturnResult(client, req, AccessToken.class, null, true).get();
     }
 
     public void subscribeToPage(String pageAccessToken) throws ConnectException, InvalidResponseException {
@@ -108,20 +79,43 @@ public class FbClient {
 
         Request req = new Request.Builder().url(url).post(RequestBody.create(MediaType.get("application/json"), "")).build();
 
+        executeAndReturnResult(client, req, null, null, false);
+    }
+
+    public FacebookDataObject<Conversation> getRecentConversation(String pageId, String pageAccessToken) throws InvalidResponseException, ConnectException {
+
+        OkHttpClient client = builder.build();
+
+        String url = String.format(getPageConversationUrl, pageId, pageAccessToken);
+
+        Request req = new Request.Builder().url(url).get().build();
+
+        return (FacebookDataObject<Conversation>) executeAndReturnResult(client, req, null, new TypeReference<FacebookDataObject<Conversation>>() {
+        }, true).get();
+    }
+
+    private <T> Optional<T> executeAndReturnResult(OkHttpClient client, Request request, Class<T> type, TypeReference typeRef, boolean needReturnValue) throws InvalidResponseException, ConnectException {
         try {
-            Response res = client.newCall(req).execute();
-            if (res.code() != 200){
+            Response res = client.newCall(request).execute();
+            if (res.code() != 200) {
                 log.info("Request not success {}", res);
                 throw new InvalidResponseException("Request not success");
             }
-//            log.info(res.body().string());
+            if (needReturnValue) {
+                if (type != null) {
+                    return Optional.of(mapper.readValue(res.body().byteStream(), type));
+                } else {
+                    return Optional.of(mapper.readValue(res.body().byteStream(), typeRef));
+                }
+            } else {
+                return Optional.empty();
+            }
+        } catch (JsonParseException | JsonMappingException e) {
+            log.info("Could not deserialize response", e);
+            throw new InvalidResponseException("Could not deserialize response", e);
         } catch (IOException e) {
             log.info("Could not connect to FB Graph API", e);
             throw new ConnectException("Failed to connect to FB Graph API", e);
         }
-    }
-
-    public FacebookDataResponse<Conversation> getRecentConversation() {
-        return null;
     }
 }

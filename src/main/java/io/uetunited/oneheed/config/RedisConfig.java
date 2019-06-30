@@ -36,16 +36,6 @@ public class RedisConfig {
     ObjectMapper mapper;
 
     @Bean
-    Jedis jedis() {
-        Jedis jedis = new Jedis(redisHost, redisPort);
-        if (StringUtils.isNotBlank(redisAuth)) {
-            jedis.auth(redisAuth);
-        }
-        jedis.select(redisDb);
-        return jedis;
-    }
-
-    @Bean
     public JedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(redisHost, redisPort);
         config.setDatabase(redisDb);
