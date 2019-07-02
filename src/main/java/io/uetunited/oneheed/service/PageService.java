@@ -22,7 +22,7 @@ public class PageService {
 
     public Optional<Page> registerPage(String pageId, String pageName, String avatar, String shortLiveAccessToken) throws InvalidResponseException, ConnectException {
         String longLiveAccessToken = fbClient.getLongLiveToken(shortLiveAccessToken).getAccessToken();
-        fbClient.subscribeToPage(longLiveAccessToken);
+        fbClient.subscribeToPage(pageId, longLiveAccessToken);
         return savePageToDb(pageId, pageName, avatar, longLiveAccessToken);
     }
 

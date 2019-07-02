@@ -72,7 +72,7 @@ public class FbClient {
         return executeAndReturnResult(client, req, AccessToken.class, null, true).get();
     }
 
-    public void subscribeToPage(String pageAccessToken) throws ConnectException, InvalidResponseException {
+    public void subscribeToPage(String pageId, String pageAccessToken) throws ConnectException, InvalidResponseException {
         OkHttpClient client = builder.build();
 
         String url = String.format(subscribePageUrl, pageAccessToken);
