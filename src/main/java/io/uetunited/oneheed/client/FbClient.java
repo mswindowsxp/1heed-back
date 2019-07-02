@@ -75,7 +75,7 @@ public class FbClient {
     public void subscribeToPage(String pageId, String pageAccessToken) throws ConnectException, InvalidResponseException {
         OkHttpClient client = builder.build();
 
-        String url = String.format(subscribePageUrl, pageAccessToken);
+        String url = String.format(subscribePageUrl, pageId, pageAccessToken);
 
         Request req = new Request.Builder().url(url).post(RequestBody.create(MediaType.get("application/json"), "")).build();
 
