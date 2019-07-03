@@ -5,11 +5,14 @@ import io.uetunited.oneheed.exception.ConnectException;
 import io.uetunited.oneheed.exception.InvalidResponseException;
 import io.uetunited.oneheed.payload.dto.Page;
 import io.uetunited.oneheed.payload.request.RegisterPageRequest;
+import io.uetunited.oneheed.security.CurrentUser;
+import io.uetunited.oneheed.security.UserPrincipal;
 import io.uetunited.oneheed.service.AuthService;
 import io.uetunited.oneheed.service.PageService;
 import io.uetunited.oneheed.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,8 +35,9 @@ public class PageController {
     PageService pageService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/facebook/pages")
-    public ResponseEntity registerPage(@RequestBody RegisterPageRequest registerPageRequest) throws InvalidResponseException, ConnectException {
-        Optional<Page> page = pageService.registerPage(registerPageRequest.getId(), registerPageRequest.getName(), registerPageRequest.getAvatar(), registerPageRequest.getAccessToken());
+    public ResponseEntity registerPage(@RequestBody RegisterPageRequest registerPageRequest, @CurrentUser UserPrincipal userPrincipal) throws InvalidResponseException, ConnectException {
+        String userId = userPrincipal.getId();
+        Optional<Page> page = pageService.registerPage(userId, registerPageRequest.getId(), registerPageRequest.getName(), registerPageRequest.getAvatar(), registerPageRequest.getAccessToken());
         if (page.isPresent()) {
             return ResponseEntity.ok(page.get());
         } else {

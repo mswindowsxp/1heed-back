@@ -14,6 +14,8 @@ public class Attachment {
     private String mimeType;
     @JsonProperty("image_data")
     private ImageData imageData;
+    @JsonProperty("video_data")
+    private VideoData videoData;
     @JsonProperty("file_url")
     private String fileUrl;
 
