@@ -7,6 +7,7 @@ import io.uetunited.oneheed.dao.redis.UserPageDao;
 import io.uetunited.oneheed.exception.ConnectException;
 import io.uetunited.oneheed.exception.InvalidResponseException;
 import io.uetunited.oneheed.payload.dto.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,5 +45,15 @@ public class PageService {
 
     public Optional<Page> getPageById(String pageId) {
         return pageDao.getById(pageId);
+    }
+
+    public Optional<Page> getCurrentPageByUser(String userId) {
+        String pageId = userPageDao.getPageIdFromUserId(userId);
+        if (StringUtils.isBlank(pageId)) {
+            return Optional.empty();
+        }
+
+        Optional<Page> page = pageDao.getById(pageId);
+        return page;
     }
 }
