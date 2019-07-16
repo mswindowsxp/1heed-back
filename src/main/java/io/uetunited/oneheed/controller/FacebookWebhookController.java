@@ -4,8 +4,10 @@
 package io.uetunited.oneheed.controller;
 
 import io.uetunited.oneheed.payload.webhook.WebhookEvent;
+import io.uetunited.oneheed.service.WebHookService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +26,14 @@ public class FacebookWebhookController {
     private static final String SUBSCRIBE = "subscribe";
     @Value("${app.verify.token}")
     String verify_token;
+    
+    @Autowired
+    private WebHookService webHookService;
 
     @PostMapping
     public ResponseEntity<?> postEvent(@Valid @RequestBody WebhookEvent webhookEvent) {
         log.info("webhookEvent: {}", webhookEvent);
+        webHookService.handleWebHookEvent(webhookEvent);
         return ResponseEntity.ok(EVENT_RECEIVED);
     }
 

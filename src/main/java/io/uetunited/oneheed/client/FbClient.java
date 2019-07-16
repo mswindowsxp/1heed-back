@@ -9,6 +9,7 @@ import io.uetunited.oneheed.exception.InvalidResponseException;
 import io.uetunited.oneheed.model.facebook.AccessToken;
 import io.uetunited.oneheed.model.facebook.Conversation;
 import io.uetunited.oneheed.model.facebook.FacebookDataObject;
+import io.uetunited.oneheed.model.facebook.MessageDetail;
 import io.uetunited.oneheed.model.facebook.UserData;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
@@ -51,6 +53,19 @@ public class FbClient {
 
     @Value("${facebook.graph.get.conversation.detail}")
     String getPageConversationDetail;
+    
+    @Value("${facebook.graph.get.message.detail}")
+    String getPageMessageDetail;
+    
+    public MessageDetail getMessageDetail(String messageId, String accessToken) throws ConnectException, InvalidResponseException {
+        OkHttpClient client = builder.build();
+
+        String url = String.format(getPageMessageDetail, messageId, accessToken);
+
+        Request req = new Request.Builder().url(url).get().build();
+
+        return executeAndReturnResult(client, req, MessageDetail.class, null, true).get();
+    }
 
     public UserData getUserInfo(String accessToken) throws ConnectException, InvalidResponseException {
         OkHttpClient client = builder.build();
