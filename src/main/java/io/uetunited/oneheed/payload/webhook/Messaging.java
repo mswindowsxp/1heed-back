@@ -1,5 +1,7 @@
 package io.uetunited.oneheed.payload.webhook;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,5 +20,9 @@ public class Messaging {
 	private Read read;
 	private Postback postback;
 
+	@Override
+	public String toString() {
+	    return ReflectionToStringBuilder.toString(this);
+	}
 
 }

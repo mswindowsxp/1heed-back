@@ -57,7 +57,7 @@ public class FbClient {
     @Value("${facebook.graph.get.message.detail}")
     String getPageMessageDetail;
     
-    public MessageDetail getMessageDetail(String messageId, String accessToken) throws ConnectException, InvalidResponseException {
+    public MessageDetail getMessageDetail(String messageId, String accessToken) throws InvalidResponseException, ConnectException  {
         OkHttpClient client = builder.build();
 
         String url = String.format(getPageMessageDetail, messageId, accessToken);

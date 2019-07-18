@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
 @Setter
 @Getter
 public class Message {
@@ -21,4 +23,10 @@ public class Message {
     private Date readAt;
     private String fromSocialId;
     private String toSocialId;
+    private String messageDetail;
+    
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
 }
