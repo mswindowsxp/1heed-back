@@ -8,6 +8,7 @@ import io.uetunited.oneheed.payload.request.RegisterPageRequest;
 import io.uetunited.oneheed.security.CurrentUser;
 import io.uetunited.oneheed.security.UserPrincipal;
 import io.uetunited.oneheed.service.AuthService;
+import io.uetunited.oneheed.service.MsgDownloaderService;
 import io.uetunited.oneheed.service.PageService;
 import io.uetunited.oneheed.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +35,17 @@ public class PageController {
     @Autowired
     PageService pageService;
 
+    @Autowired
+    MsgDownloaderService msgDownloaderService;
+
     @RequestMapping(method = RequestMethod.POST, value = "/facebook/pages")
     public ResponseEntity registerPage(@RequestBody RegisterPageRequest registerPageRequest, @CurrentUser UserPrincipal userPrincipal) throws InvalidResponseException, ConnectException {
         String userId = userPrincipal.getId();
         Optional<Page> page = pageService.registerPage(userId, registerPageRequest.getId(), registerPageRequest.getName(), registerPageRequest.getAvatar(), registerPageRequest.getAccessToken());
+
         if (page.isPresent()) {
+            // download all messages to DB
+            msgDownloaderService.downloadAllMsgToDatabase();
             return ResponseEntity.ok(page.get());
         } else {
             return ResponseEntity.badRequest().build();
