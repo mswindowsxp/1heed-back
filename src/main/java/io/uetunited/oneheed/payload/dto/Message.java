@@ -4,21 +4,22 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Setter
 @Getter
 public class Message {
     private String id;
     private String socialId;
-    private String channel;
     private String conversationId;
-    private String from;
-    private String to;
-    private String content;
-    private Integer readStatus;
-    private Integer sendStatus;
-    private Date sendAt;
-    private Date readAt;
+    private String conversationSocialId;
+    private String fromUserId;
     private String fromSocialId;
-    private String toSocialId;
+    private String[] toUserIds;
+    private String[] toSocialIds;
+    private String message;
+    private String sticker;
+    private String attachments;
+    private String shares;
+    private Date sendAt;
 }

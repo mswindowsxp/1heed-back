@@ -45,7 +45,7 @@ public class PageController {
 
         if (page.isPresent()) {
             // download all messages to DB
-            msgDownloaderService.downloadAllMsgToDatabase();
+            msgDownloaderService.downloadAllMsgToDatabase(page.get().getSocialId(), page.get().getAccessToken());
             return ResponseEntity.ok(page.get());
         } else {
             return ResponseEntity.badRequest().build();

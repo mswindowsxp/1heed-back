@@ -9,11 +9,17 @@ import java.util.Date;
 @Setter
 public class Conversation {
     private String id;
+    private String socialId;
+    private String link;
+
+    // message count
+    private Integer messageCount;
+    private Integer unreadCount;
+
+    // relation
     private String pageId;
-    private String customerId;
-    private String userId;
-    private String status;
-    private Date startAt;
-    private Date endAt;
-    private String channel;
+    private String pageSocialId;
+    // reserve for user handling
+    private String handlerId;
+    private String handlerSocialId;
 }
