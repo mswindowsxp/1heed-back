@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class TagDao {
@@ -15,11 +14,10 @@ public class TagDao {
     @Autowired
     Jdbi jdbi = null;
 
-    public List<Tag> getListTag (String pageID) {
+    public List<Tag> getListTagByPageID (String pageID) {
         String sql = "select * from tag where pageID=:pageID";
         try(Handle handle = jdbi.open()) {
             return handle.createQuery(sql).bind("pageID", pageID).mapToBean(Tag.class).list();
         }
-
     }
 }
