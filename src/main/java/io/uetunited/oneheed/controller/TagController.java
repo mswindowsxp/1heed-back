@@ -30,25 +30,31 @@ public class TagController {
     }
 
     /**
-     * Using for get list tag has been
+     * Using for get list tag has been created
      */
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity getListTag(@CurrentUser UserPrincipal userPrincipal) {
-
-        List<Tag> tagList = tagService.getListTag(userPrincipal.getId());
+            List<Tag> tagList = tagService.getListTag(userPrincipal.getId());
         if (CollectionUtils.isEmpty(tagList)) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok(tagList);
         }
     }
 
     /**
-     * Using for tag a conversation
+     * Using for create a tag
      */
-    @PostMapping("/")
-    public ResponseEntity tagConversation() {
-        return null;
+//    @RequestMapping(method = RequestMethod.POST, value = "/tag")
+    @PostMapping
+    public ResponseEntity createTag (@RequestBody Tag tag, @CurrentUser UserPrincipal userPrincipal) {
+        tag.setPage_id(userPrincipal.getId());
+        List<Tag> tagList = tagService.createTag(tag);
+        if (CollectionUtils.isEmpty(tagList)) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(tagList);
+        }
     }
 
 }
