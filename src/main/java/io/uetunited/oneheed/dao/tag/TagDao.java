@@ -42,7 +42,8 @@ public class TagDao {
     }
 
     public void deleteTagByTagID(String tagID, String pageID) {
-        String sql = "delete from tags where page_id=:pageID and id like :tagID";
+        String sql = "" +
+                " tags where page_id=:pageID and id like :tagID";
         try(Handle handle = jdbi.open()) {
             Tag bind = handle.createQuery(sql).bind("pageID", pageID).bind("tagID", tagID).mapToBean(Tag.class).findOnly();
         }
