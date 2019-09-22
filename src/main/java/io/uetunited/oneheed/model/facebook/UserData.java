@@ -11,9 +11,9 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserData {
+    private String id;
     private String name;
     private Picture picture;
-    private String id;
     private String email;
     @JsonProperty(value = "access_token", access = JsonProperty.Access.WRITE_ONLY)
     private String accessToken;
